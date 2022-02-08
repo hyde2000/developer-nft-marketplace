@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { FC } from "react";
+import { FC, Props } from "react";
 
 import "@styles/globals.css";
 

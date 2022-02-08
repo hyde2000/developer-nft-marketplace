@@ -1,4 +1,6 @@
 import { KeyedMutator } from "swr";
+import { NormalizedOwnedCourseType, OwnedCourseType } from "types/common";
+import { CourseType } from "types/content";
 
 export type UseAccountColumns = {
   data?: string;
@@ -9,16 +11,26 @@ export type UseAccountColumns = {
 };
 
 export type UseNetworkColumns = {
-  data: string | undefined;
+  data?: string;
   hasInitialResponse: boolean;
   target: string;
   isSupported: boolean;
   error?: any;
-  isValidating?: boolean;
+  isValidating: boolean;
   mutate?: KeyedMutator<string>;
+};
+
+export type useOwnedCoursesColumns = {
+  data?: NormalizedOwnedCourseType[];
+  isValidating: boolean;
+  mutate?: KeyedMutator<NormalizedOwnedCourseType[]>;
 };
 
 export type GetHooksType = {
   useAccount: () => { account: UseAccountColumns };
   useNetwork: () => { network: UseNetworkColumns };
+  useOwnedCourses: (
+    courses: CourseType[],
+    account?: string
+  ) => { ownedCourses: useOwnedCoursesColumns };
 };

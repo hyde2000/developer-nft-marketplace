@@ -65,12 +65,12 @@ const Web3Provider = ({ children }: { children: ReactNode | ReactNode[] }) => {
   }, []);
 
   const _web3Api = useMemo(() => {
-    const { web3, provider, isLoading } = web3Api;
+    const { web3, provider, isLoading, contract } = web3Api;
 
     return {
       ...web3Api,
       requireInstall: !isLoading && !web3,
-      hooks: setupHooks(web3, provider),
+      hooks: setupHooks(web3, provider, contract),
       connect: provider
         ? async () => {
             try {

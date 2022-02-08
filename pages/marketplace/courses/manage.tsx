@@ -1,6 +1,5 @@
 import { CourseFilter, OwnedCourseCard } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
-import { getAllCourses } from "@content/courses/fetcher";
 import { MarketHeader } from "@components/ui/marketplace";
 import { Button } from "@components/ui/common";
 
@@ -27,16 +26,6 @@ const ManageCourses = () => {
       </section>
     </>
   );
-};
-
-export const getStaticProps = () => {
-  const { data } = getAllCourses();
-
-  return {
-    props: {
-      courses: data,
-    },
-  };
 };
 
 ManageCourses.Layout = BaseLayout;
