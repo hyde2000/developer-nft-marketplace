@@ -60,9 +60,7 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
 
   return (
     <>
-      <div className="py-4">
-        <MarketHeader />
-      </div>
+      <MarketHeader />
       <CourseList courses={courses}>
         {(course: CourseType) => (
           <CourseCard

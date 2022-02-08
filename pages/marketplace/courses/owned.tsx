@@ -17,9 +17,7 @@ const OwnedCourses = ({ courses }: Props) => {
 
   return (
     <>
-      <div className="py-4">
-        <MarketHeader />
-      </div>
+      <MarketHeader />
       <section className="grid grid-cols-1">
         {ownedCourses.data?.map((course) => (
           <OwnedCourseCard key={course.id} ownedCourse={course}>
