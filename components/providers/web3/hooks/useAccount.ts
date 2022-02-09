@@ -1,3 +1,4 @@
+import { isEmpty } from "@components/hooks/isEmpty";
 import { useEffect } from "react";
 import useSWR from "swr";
 import Web3 from "web3";
@@ -9,7 +10,13 @@ export const accountHandler = (web3: Web3 | null, provider: any) => () => {
     () => (web3 ? "web3/accounts" : null),
     async () => {
       const accounts = await web3!.eth.getAccounts();
-      return accounts[0];
+      const account = accounts[0];
+      if (!account) {
+        throw new Error(
+          "Cannot retreive an account. Please refresh the browser."
+        );
+      }
+      return account;
     }
   );
 
@@ -19,11 +26,15 @@ export const accountHandler = (web3: Web3 | null, provider: any) => () => {
         mutate(accounts[0])
       );
   }, [provider]);
+
+  const empty = isEmpty(data);
+
   return {
     account: {
       data,
       isAdmin: data && web3!.utils.keccak256(data) === adminAddress,
       mutate,
+      isEmpty: empty,
       ...rest,
     },
   };

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { useAccount } from "@components/hooks/useAccount";
@@ -8,6 +9,7 @@ import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { getAllCourses } from "@content/courses/fetcher";
 import { CourseType } from "types/content";
+import { useWeb3 } from "@components/providers";
 
 type Props = {
   courses: CourseType[];
@@ -16,6 +18,7 @@ type Props = {
 const OwnedCourses = ({ courses }: Props) => {
   const router = useRouter();
 
+  const { requireInstall } = useWeb3();
   const { account } = useAccount();
   const { ownedCourses } = useOwnedCourses(courses, account.data);
 
@@ -23,9 +26,37 @@ const OwnedCourses = ({ courses }: Props) => {
     <>
       <MarketHeader />
       <section className="grid grid-cols-1">
+        {/* Owned Couse is Empty */}
+        {ownedCourses.isEmpty && (
+          <div className="w-1/2">
+            <Message type="warning">
+              <div>You don't own any courses</div>
+              <Link href="/marketplace">
+                <a className="font-normal hover:underline">
+                  <i>Purchase Course</i>
+                </a>
+              </Link>
+            </Message>
+          </div>
+        )}
+        {/* User hasn't connected */}
+        {account.isEmpty && (
+          <div className="w-1/2">
+            <Message type="warning">
+              <div>Please connect to Metamask</div>
+            </Message>
+          </div>
+        )}
+        {/* Use hasn't installed Metamask */}
+        {requireInstall && (
+          <div className="w-1/2">
+            <Message type="warning">
+              <div>Please install Metamask</div>
+            </Message>
+          </div>
+        )}
         {ownedCourses.data?.map((course) => (
           <OwnedCourseCard key={course.id} ownedCourse={course}>
-            {/*<Message>My custom message!</Message> */}
             <Button onClick={() => router.push(`/courses/${course.slug}`)}>
               Watch the course
             </Button>

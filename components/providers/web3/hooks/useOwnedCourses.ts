@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { CourseType } from "types/content";
 import { normalizeOwnedCourse } from "@utils/normalizeOwnedCourse";
 import { NormalizedOwnedCourseType, OwnedCourseType } from "types/common";
+import { isEmpty } from "@components/hooks/isEmpty";
 
 export const ownedCoursesHandler =
   (web3: Web3 | null, contract: any) =>
@@ -51,11 +52,14 @@ export const ownedCoursesHandler =
       }
     );
 
+    const empty = isEmpty(data);
+
     return {
       ownedCourses: {
         data,
         mutate,
         isValidating,
+        isEmpty: empty,
       },
     };
   };

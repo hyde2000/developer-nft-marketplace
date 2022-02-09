@@ -5,6 +5,7 @@ import { CourseType } from "types/content";
 export type UseAccountColumns = {
   data?: string;
   isAdmin?: boolean | "";
+  isEmpty: boolean;
   error?: any;
   isValidating: boolean;
   mutate: KeyedMutator<string>;
@@ -24,6 +25,7 @@ export type UseOwnedCoursesColumns = {
   data?: NormalizedOwnedCourseType[];
   isValidating: boolean;
   mutate: KeyedMutator<NormalizedOwnedCourseType[]>;
+  isEmpty: boolean;
 };
 
 export type UseOwnedCourseColumns = {
