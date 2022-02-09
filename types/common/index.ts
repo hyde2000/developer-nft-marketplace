@@ -31,5 +31,5 @@ export type NormalizedOwnedCourseType = {
   ownedCourseID: number;
   proof: string;
   price?: string;
-  state: string;
+  state: "purchased" | "activated" | "deactivated";
 };

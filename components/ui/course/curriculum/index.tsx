@@ -3,10 +3,11 @@ import { FC } from "react";
 
 type Props = {
   locked: boolean;
+  courseState?: "purchased" | "activated" | "deactivated";
 };
 
 const Curriculum: FC<Props> = (props) => {
-  const { locked } = props;
+  const { locked, courseState } = props;
 
   const lectures = [
     "How to init App",
@@ -70,11 +71,30 @@ const Curriculum: FC<Props> = (props) => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link href="#">
-                          <a className="text-indigo-600 hover:text-indigo-900">
-                            {locked ? "Get Access" : "Play"}
-                          </a>
-                        </Link>
+                        {locked ? (
+                          <>
+                            {courseState === "deactivated" && (
+                              <Link href="/marketplace">
+                                <a className="text-indigo-600 hover:text-indigo-900">
+                                  Get Access
+                                </a>
+                              </Link>
+                            )}
+                            {courseState === "purchased" && (
+                              <Link href="/faq">
+                                <a className="text-yellow-500 hover:text-yellow-900">
+                                  Waiting for activation...
+                                </a>
+                              </Link>
+                            )}
+                          </>
+                        ) : (
+                          <Link href="/watch">
+                            <a className="text-indigo-600 hover:text-indigo-900">
+                              Watch
+                            </a>
+                          </Link>
+                        )}
                       </td>
                     </tr>
                   ))}
