@@ -13,7 +13,7 @@ const NavBar: FC = () => {
     <section>
       <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
         <nav className="relative" aria-label="Global">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col xs:flex-row justify-between items-center">
             <div>
               <ActiveLink
                 href="/"
@@ -31,10 +31,10 @@ const NavBar: FC = () => {
                 value="Blog"
               />
             </div>
-            <div>
+            <div className="text-center">
               <ActiveLink
                 href="/wishlist"
-                className="font-medium mr-8 text-gray-500 hover:text-gray-900"
+                className="font-medium sm:mr-8 mr-1 text-gray-500 hover:text-gray-900"
                 value="Wishlist"
               />
               {isLoading ? (

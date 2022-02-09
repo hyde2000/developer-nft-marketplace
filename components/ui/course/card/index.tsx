@@ -29,7 +29,7 @@ const Card: FC<Props> = ({ course, disabled, Footer }) => {
             {course.type}
           </div>
           <Link href={`/courses/${course.slug}`}>
-            <a className="h-12 block mt-1 text-lg leading-tight font-medium text-black hover:underline">
+            <a className="h-12 block mt-1 text-sm sm:text-lg leading-tight font-medium text-black hover:underline">
               {course.title}
             </a>
           </Link>

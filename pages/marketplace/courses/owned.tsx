@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 import { useAccount } from "@components/hooks/useAccount";
 import { useOwnedCourses } from "@components/hooks/useOwnedCourses";
 import { Button, Message } from "@components/ui/common";
@@ -12,6 +14,8 @@ type Props = {
 };
 
 const OwnedCourses = ({ courses }: Props) => {
+  const router = useRouter();
+
   const { account } = useAccount();
   const { ownedCourses } = useOwnedCourses(courses, account.data);
 
@@ -22,7 +26,9 @@ const OwnedCourses = ({ courses }: Props) => {
         {ownedCourses.data?.map((course) => (
           <OwnedCourseCard key={course.id} ownedCourse={course}>
             {/*<Message>My custom message!</Message> */}
-            <Button>Watch the course</Button>
+            <Button onClick={() => router.push(`/courses/${course.slug}`)}>
+              Watch the course
+            </Button>
           </OwnedCourseCard>
         ))}
       </section>

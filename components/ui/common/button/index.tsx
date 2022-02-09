@@ -6,7 +6,7 @@ type Props = {
   className?: string;
   disabled?: boolean;
   hoverable?: boolean;
-  variant?: "purple" | "red" | "lightPurple";
+  variant?: "purple" | "red" | "lightPurple" | "white";
 };
 
 const Button: FC<Props> = ({
@@ -22,12 +22,13 @@ const Button: FC<Props> = ({
     lightPurple: `text-indigo-700 bg-indigo-100 ${
       hoverable && "hover:bg-indigo-200"
     }`,
+    white: "text-black bg-white",
   };
 
   return (
     <button
       onClick={onClick}
-      className={`disabled:opacity-50 disabled:cursor-not-allowed px-8 py-3 border rounded-md text-base font-medium ${className} ${variants[variant]}`}
+      className={`disabled:opacity-50 disabled:cursor-not-allowed xs:px-8 xs:py-3 p-2 border rounded-md text-base font-medium ${className} ${variants[variant]}`}
     >
       {children}
     </button>
