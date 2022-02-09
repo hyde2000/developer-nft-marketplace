@@ -1,5 +1,4 @@
 import { useWeb3 } from "@components/providers";
-import { OwnedCourseType } from "types/common";
 import { CourseType } from "types/content";
 
 export const useOwnedCourses = (courses: CourseType[], account?: string) => {

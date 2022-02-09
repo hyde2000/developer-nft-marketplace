@@ -17,13 +17,19 @@ export type UseNetworkColumns = {
   isSupported: boolean;
   error?: any;
   isValidating: boolean;
-  mutate?: KeyedMutator<string>;
+  mutate: KeyedMutator<string>;
 };
 
-export type useOwnedCoursesColumns = {
+export type UseOwnedCoursesColumns = {
   data?: NormalizedOwnedCourseType[];
   isValidating: boolean;
-  mutate?: KeyedMutator<NormalizedOwnedCourseType[]>;
+  mutate: KeyedMutator<NormalizedOwnedCourseType[]>;
+};
+
+export type UseOwnedCourseColumns = {
+  data?: NormalizedOwnedCourseType;
+  isValidating: boolean;
+  mutate: KeyedMutator<NormalizedOwnedCourseType | undefined>;
 };
 
 export type GetHooksType = {
@@ -32,5 +38,9 @@ export type GetHooksType = {
   useOwnedCourses: (
     courses: CourseType[],
     account?: string
-  ) => { ownedCourses: useOwnedCoursesColumns };
+  ) => { ownedCourses: UseOwnedCoursesColumns };
+  useOwnedCourse: (
+    course: CourseType,
+    account?: string
+  ) => { ownedCourse: UseOwnedCourseColumns };
 };

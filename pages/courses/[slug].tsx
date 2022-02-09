@@ -1,3 +1,5 @@
+import { useAccount } from "@components/hooks/useAccount";
+import { useOwnedCourse } from "@components/hooks/useOwnedCourse";
 import { Modal } from "@components/ui/common";
 import { Curriculum, KeyPoints, CourseHero } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
@@ -5,6 +7,9 @@ import { getAllCourses } from "@content/courses/fetcher";
 import { CourseType } from "types/content";
 
 const Course = ({ course }: { course: CourseType }) => {
+  const { account } = useAccount();
+  const { ownedCourse } = useOwnedCourse(course, account.data);
+
   return (
     <>
       <div className="py-4">
@@ -16,7 +21,9 @@ const Course = ({ course }: { course: CourseType }) => {
       </div>
       <KeyPoints points={course.wsl} />
       <Curriculum locked={true} />
-      <Modal />
+      <Modal isOpen={false}>
+        <div className=""></div>
+      </Modal>
     </>
   );
 };
