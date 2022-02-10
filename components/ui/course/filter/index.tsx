@@ -1,6 +1,8 @@
+import { FC } from "react";
+
 import { Button } from "@components/ui/common";
 
-const CourseFilter = () => {
+const CourseFilter: FC = () => {
   return (
     <div className="flex flex-col md:flex-row items-center my-4">
       <div className="flex mr-2 relative rounded-md">

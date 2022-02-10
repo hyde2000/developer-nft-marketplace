@@ -54,7 +54,7 @@ export type GetHooksType = {
     course: CourseType,
     account?: string
   ) => { ownedCourse: UseOwnedCourseColumns };
-  useManagedCourses: (account?: string) => {
+  useManagedCourses: (account?: UseAccountColumns) => {
     managedCourses: UseManagedCoursesColumns;
   };
 };
