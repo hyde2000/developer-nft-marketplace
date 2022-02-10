@@ -7,7 +7,7 @@ import { isEmpty } from "@components/hooks/isEmpty";
 const adminAddress = process.env.ADMIN_HASHED_ADDRESS;
 
 export const accountHandler = (web3: Web3 | null, provider: any) => () => {
-  const { data, mutate, ...rest } = useSWR(
+  const { data, mutate, error, ...rest } = useSWR(
     () => (web3 ? "web3/accounts" : null),
     async () => {
       const accounts = await web3!.eth.getAccounts();
@@ -35,6 +35,7 @@ export const accountHandler = (web3: Web3 | null, provider: any) => () => {
   return {
     account: {
       data,
+      hasInitialResponse: data || error,
       isAdmin: data && web3!.utils.keccak256(data) === adminAddress,
       mutate,
       isEmpty: empty,

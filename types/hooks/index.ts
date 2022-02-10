@@ -8,6 +8,7 @@ import { CourseType } from "types/content";
 export type UseAccountColumns = {
   data?: string;
   isAdmin?: boolean | "";
+  hasInitialResponse: boolean;
   isEmpty: boolean;
   error?: any;
   isValidating: boolean;

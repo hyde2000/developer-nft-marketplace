@@ -1,6 +1,7 @@
 export type LinkType = {
   href: string;
   value: string;
+  requireAdmin?: boolean;
 };
 
 export type OrderType = {

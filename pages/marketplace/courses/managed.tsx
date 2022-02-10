@@ -4,9 +4,9 @@ import { CourseFilter, ManagedCourseCard } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { Button, Message } from "@components/ui/common";
-import { useAccount } from "@components/hooks/useAccount";
 import { useManagedCourses } from "@components/hooks/useManagedCourses";
 import { useWeb3 } from "@components/providers";
+import { useAdmin } from "@components/hooks/useAdmin";
 
 const ManageCourses = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ const ManageCourses = () => {
   }>({ hash: false });
 
   const { web3 } = useWeb3();
-  const { account } = useAccount();
+  const { account } = useAdmin("/marketplace");
   const { managedCourses } = useManagedCourses(account);
 
   const verifyCourse = (
@@ -40,6 +40,10 @@ const ManageCourses = () => {
         : setProofedOwnership({ [hash]: false });
     }
   };
+
+  if (!account.isAdmin) {
+    return null;
+  }
 
   return (
     <>
