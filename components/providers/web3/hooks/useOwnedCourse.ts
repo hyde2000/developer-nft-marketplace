@@ -1,9 +1,9 @@
-import { isEmpty } from "@components/hooks/isEmpty";
-import { normalizeOwnedCourse } from "@utils/normalizeOwnedCourse";
 import useSWR from "swr";
+import Web3 from "web3";
+
+import { normalizeOwnedCourse } from "@utils/normalizeOwnedCourse";
 import { OwnedCourseType } from "types/common";
 import { CourseType } from "types/content";
-import Web3 from "web3";
 
 export const ownedCourseHandler =
   (web3: Web3 | null, contract: any) =>
@@ -13,7 +13,7 @@ export const ownedCourseHandler =
         web3 && contract && account ? `web3/ownedCourse/${account}` : null,
       async () => {
         const hexCourseID = web3?.utils.utf8ToHex(course.id);
-        console.log(account && hexCourseID);
+
         if (account && hexCourseID) {
           const courseHash = web3?.utils.soliditySha3(
             {

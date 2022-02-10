@@ -1,7 +1,8 @@
-import { isEmpty } from "@components/hooks/isEmpty";
 import { useEffect } from "react";
 import useSWR from "swr";
 import Web3 from "web3";
+
+import { isEmpty } from "@components/hooks/isEmpty";
 
 const adminAddress = process.env.ADMIN_HASHED_ADDRESS;
 
@@ -21,10 +22,12 @@ export const accountHandler = (web3: Web3 | null, provider: any) => () => {
   );
 
   useEffect(() => {
-    provider &&
-      provider.on("accountsChanged", (accounts: string[]) =>
-        mutate(accounts[0])
-      );
+    const mutator = (accounts: string[]) => mutate(accounts[0]);
+    provider.on("accountsChanged", mutator);
+
+    return () => {
+      provider.removeListener("accountsChanged", mutator);
+    };
   }, [provider]);
 
   const empty = isEmpty(data);

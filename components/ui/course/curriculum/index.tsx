@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { FC } from "react";
 
+import { Loader } from "@components/ui/common";
+
 type Props = {
   locked: boolean;
   courseState?: "purchased" | "activated" | "deactivated";
+  isLoading: boolean;
 };
 
 const Curriculum: FC<Props> = (props) => {
-  const { locked, courseState } = props;
+  const { locked, courseState, isLoading } = props;
 
   const lectures = [
     "How to init App",
@@ -67,7 +70,13 @@ const Curriculum: FC<Props> = (props) => {
                               : `bg-green-100 text-green-800 ${statusClass}`
                           }
                         >
-                          {locked ? "Locked" : "Unlocked"}
+                          {isLoading ? (
+                            <Loader size="md" />
+                          ) : locked ? (
+                            "Locked"
+                          ) : (
+                            "Unlocked"
+                          )}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

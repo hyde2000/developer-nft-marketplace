@@ -23,17 +23,23 @@ export const networkHandler = (web3: Web3 | null, provider: any) => () => {
     () => (web3 ? "web3/network" : null),
     async () => {
       const chainID = await web3!.eth.getChainId();
+      if (!chainID) {
+        throw new Error("Cannot retreive network, Please refresh the browser.");
+      }
 
       return NETWORKS[chainID];
     }
   );
 
   useEffect(() => {
-    provider &&
-      provider.on("chainChanged", (chainId: string) => {
-        mutate(NETWORKS[parseInt(chainId, 16)]);
-      });
-  }, [web3]);
+    const mutator = (chainID: string) =>
+      mutate(NETWORKS[parseInt(chainID, 16)]);
+    provider.on("chainChanged", mutator);
+
+    return () => {
+      provider.removeListener("chainChanged", mutator);
+    };
+  }, [provider]);
 
   return {
     network: {

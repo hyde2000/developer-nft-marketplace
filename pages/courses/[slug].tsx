@@ -1,5 +1,6 @@
 import { useAccount } from "@components/hooks/useAccount";
 import { useOwnedCourse } from "@components/hooks/useOwnedCourse";
+import { useWeb3 } from "@components/providers";
 import { Message, Modal } from "@components/ui/common";
 import { Curriculum, KeyPoints, CourseHero } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
@@ -7,11 +8,15 @@ import { getAllCourses } from "@content/courses/fetcher";
 import { CourseType } from "types/content";
 
 const Course = ({ course }: { course: CourseType }) => {
+  const { isLoading } = useWeb3();
   const { account } = useAccount();
   const { ownedCourse } = useOwnedCourse(course, account.data);
 
   const courseState = ownedCourse.data?.state;
-  const isLocked = courseState === "purchased" || courseState === "deactivated";
+  const isLocked =
+    !courseState ||
+    courseState === "purchased" ||
+    courseState === "deactivated";
 
   return (
     <>
@@ -51,7 +56,11 @@ const Course = ({ course }: { course: CourseType }) => {
           )}
         </div>
       )}
-      <Curriculum locked={isLocked} courseState={courseState} />
+      <Curriculum
+        isLoading={isLoading}
+        locked={isLocked}
+        courseState={courseState}
+      />
       <Modal isOpen={false}>
         <div className=""></div>
       </Modal>

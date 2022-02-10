@@ -3,8 +3,9 @@ import Web3 from "web3";
 
 import { CourseType } from "types/content";
 import { normalizeOwnedCourse } from "@utils/normalizeOwnedCourse";
-import { NormalizedOwnedCourseType, OwnedCourseType } from "types/common";
+import { OwnedCourseType } from "types/common";
 import { isEmpty } from "@components/hooks/isEmpty";
+import { createCourseHash } from "@utils/createCourseHash";
 
 export const ownedCoursesHandler =
   (web3: Web3 | null, contract: any) =>
@@ -22,20 +23,12 @@ export const ownedCoursesHandler =
 
           const hexCourseID = web3?.utils.utf8ToHex(course.id);
           if (hexCourseID && account) {
-            const courseHash = web3?.utils.soliditySha3(
-              {
-                type: "bytes32",
-                value: hexCourseID,
-              },
-              {
-                type: "address",
-                value: account,
-              }
-            );
+            const courseHash = createCourseHash(web3)(course.id, account);
 
             const ownedCourse: OwnedCourseType = await contract.methods
               .getCourseByHash(courseHash)
               .call();
+
             if (
               ownedCourse.owner !== "0x0000000000000000000000000000000000000000"
             ) {
