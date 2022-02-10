@@ -2,7 +2,7 @@ import useSWR from "swr";
 import Web3 from "web3";
 
 import { normalizeOwnedCourse } from "@utils/normalizeOwnedCourse";
-import { OwnedCourseType } from "types/common";
+import { NormalizedOwnedCourseType, OwnedCourseType } from "types/common";
 import { CourseType } from "types/content";
 
 export const ownedCourseHandler =
@@ -33,7 +33,9 @@ export const ownedCourseHandler =
           if (
             ownedCourse.owner !== "0x0000000000000000000000000000000000000000"
           ) {
-            return normalizeOwnedCourse(web3)(course, ownedCourse);
+            const normalizedOwnedCourse: NormalizedOwnedCourseType =
+              normalizeOwnedCourse(web3)(course, ownedCourse);
+            return normalizedOwnedCourse;
           }
         }
       }

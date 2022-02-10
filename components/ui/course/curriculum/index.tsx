@@ -5,7 +5,7 @@ import { Loader } from "@components/ui/common";
 
 type Props = {
   locked: boolean;
-  courseState?: "purchased" | "activated" | "deactivated";
+  courseState?: string;
   isLoading: boolean;
 };
 

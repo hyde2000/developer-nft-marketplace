@@ -17,7 +17,7 @@ export const loadContract = async (name: string, web3: Web3) => {
       console.log("NETWORK_ID is not set");
     }
   } catch {
-    console.log(`Contract ${name} cannot be loaded`);
+    console.error(`Contract ${name} cannot be loaded`);
   }
 
   return contract;

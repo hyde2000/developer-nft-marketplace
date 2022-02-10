@@ -14,7 +14,7 @@ export type OwnedCourseType = {
   price: string;
   proof: string;
   owner: string;
-  state: 0 | 1 | 2;
+  state: number;
 };
 
 export type NormalizedOwnedCourseType = {
@@ -31,5 +31,13 @@ export type NormalizedOwnedCourseType = {
   ownedCourseID: number;
   proof: string;
   price?: string;
-  state: "purchased" | "activated" | "deactivated";
+  state: string;
+};
+
+export type NormalizedManagedCourseType = {
+  ownedCourseID: number;
+  proof: string;
+  price?: string;
+  state: string;
+  hash: string;
 };

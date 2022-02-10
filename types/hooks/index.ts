@@ -1,5 +1,8 @@
 import { KeyedMutator } from "swr";
-import { NormalizedOwnedCourseType, OwnedCourseType } from "types/common";
+import {
+  NormalizedManagedCourseType,
+  NormalizedOwnedCourseType,
+} from "types/common";
 import { CourseType } from "types/content";
 
 export type UseAccountColumns = {
@@ -34,6 +37,12 @@ export type UseOwnedCourseColumns = {
   mutate: KeyedMutator<NormalizedOwnedCourseType | undefined>;
 };
 
+export type UseManagedCoursesColumns = {
+  data?: NormalizedManagedCourseType[];
+  isValidating: boolean;
+  mutate: KeyedMutator<NormalizedManagedCourseType[]>;
+};
+
 export type GetHooksType = {
   useAccount: () => { account: UseAccountColumns };
   useNetwork: () => { network: UseNetworkColumns };
@@ -45,4 +54,7 @@ export type GetHooksType = {
     course: CourseType,
     account?: string
   ) => { ownedCourse: UseOwnedCourseColumns };
+  useManagedCourses: (account?: string) => {
+    managedCourses: UseManagedCoursesColumns;
+  };
 };
