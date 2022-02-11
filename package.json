@@ -8,7 +8,7 @@
     "lint": "next lint",
     "gen-types": "typechain --target=truffle-v5 'public/contracts/*.json'",
     "postinstall": "truffle compile && yarn gen-types",
-    "test": "yarn postinstall && truffle test"
+    "test-truffle": "yarn postinstall && truffle test"
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",

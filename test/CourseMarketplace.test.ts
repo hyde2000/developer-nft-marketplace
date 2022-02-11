@@ -5,7 +5,9 @@ contract("CourseMarketplace", (accounts) => {
   const proof =
     "0x0000000000000000000000000000313000000000000000000000000000003130";
   const value = "900000000";
+  const owner = accounts[0];
   const buyer = accounts[1];
+  let index = 0;
 
   describe("Purchase the new course", () => {
     it("can get the purchased course hash by index", async () => {
@@ -13,7 +15,6 @@ contract("CourseMarketplace", (accounts) => {
 
       await _contract.purchaseCourse(courseID, proof, { from: buyer, value });
 
-      const index = 0;
       const courseHash = await _contract.getCourseHashAtIndex(index);
       const expectedHash = web3.utils.soliditySha3(
         {
@@ -30,7 +31,6 @@ contract("CourseMarketplace", (accounts) => {
     });
 
     it("should match the data of the course purchased by buyer", async () => {
-      const index = 0;
       const _contract = await CourseMarketplace.deployed();
       const courseHash = await _contract.getCourseHashAtIndex(index);
 
@@ -55,6 +55,23 @@ contract("CourseMarketplace", (accounts) => {
         Number(course.state),
         expectedState,
         `Course state should be ${expectedState}!`
+      );
+    });
+  });
+
+  describe("Activate the purchased course", () => {
+    it("should have 'actived' state", async () => {
+      const _contract = await CourseMarketplace.deployed();
+      const courseHash = await _contract.getCourseHashAtIndex(index);
+      await _contract.activateCourse(courseHash, { from: owner });
+
+      const course = await _contract.getCourseByHash(courseHash);
+      const expectedState = 1;
+
+      assert.equal(
+        Number(course.state),
+        expectedState,
+        "Course state sould be 'activated'"
       );
     });
   });

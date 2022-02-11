@@ -23,7 +23,7 @@ contract CourseMarketplace {
     address payable private owner;
 
     modifier onlyOwner() {
-        require(msg.sender != getContractOwner(), "Only owner has access");
+        require(msg.sender == getContractOwner(), "Only owner has access");
         _;
     }
 
@@ -56,13 +56,10 @@ contract CourseMarketplace {
     }
 
     function activateCourse(bytes32 courseHash) external onlyOwner {
-        require(!isCourseCreated(courseHash), "Course is not created.");
+        require(isCourseCreated(courseHash), "Course is not created.");
         Course storage course = ownedCourses[courseHash];
 
-        require(
-            course.state != State.Purchased,
-            "Course was already purchased."
-        );
+        require(course.state == State.Purchased, "Course not purchased yet.");
         course.state = State.Activated;
     }
 
