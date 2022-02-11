@@ -14,7 +14,7 @@ const ManageCourses = () => {
     [hash: string]: boolean;
   }>({ hash: false });
 
-  const { web3 } = useWeb3();
+  const { web3, contract } = useWeb3();
   const { account } = useAdmin("/marketplace");
   const { managedCourses } = useManagedCourses(account);
 
@@ -38,6 +38,16 @@ const ManageCourses = () => {
       proofToCheck === proof
         ? setProofedOwnership({ [hash]: true })
         : setProofedOwnership({ [hash]: false });
+    }
+  };
+
+  const activateCourse = async (courseHash: string) => {
+    try {
+      await contract.methods
+        .activateCourse(courseHash)
+        .send({ from: account.data });
+    } catch (err: any) {
+      console.error(err.message);
     }
   };
 
@@ -81,6 +91,17 @@ const ManageCourses = () => {
             {proofedOwnership[course.hash] === false && (
               <div className="mt-2">
                 <Message type="danger">Wrong Proof!</Message>
+              </div>
+            )}
+            {course.state === "purchased" && (
+              <div className="mt-2">
+                <Button
+                  onClick={() => activateCourse(course.hash)}
+                  variant="green"
+                >
+                  Activate
+                </Button>
+                <Button variant="red">Deactivate</Button>
               </div>
             )}
           </ManagedCourseCard>

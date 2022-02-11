@@ -35,7 +35,7 @@ export const ManagedCourseCard: FC<Props> = ({ children, course }) => {
             value={course[key as keyof NormalizedManagedCourseType]}
           />
         ))}
-        <div className="bg-white px-4 py-5 sm:px-6">{children}</div>
+        <div className="bg-white px-4 py-2 sm:px-6">{children}</div>
       </div>
     </div>
   );
