@@ -55,6 +55,17 @@ contract CourseMarketplace {
         return courseHash;
     }
 
+    function activateCourse(bytes32 courseHash) external onlyOwner {
+        require(!isCourseCreated(courseHash), "Course is not created.");
+        Course storage course = ownedCourses[courseHash];
+
+        require(
+            course.state != State.Purchased,
+            "Course was already purchased."
+        );
+        course.state = State.Activated;
+    }
+
     function transferOwnership(address newOwner) external onlyOwner {
         setContractOwner(newOwner);
     }
@@ -85,6 +96,12 @@ contract CourseMarketplace {
 
     function setContractOwner(address newOwner) private {
         owner = payable(newOwner);
+    }
+
+    function isCourseCreated(bytes32 courseHash) private view returns (bool) {
+        return
+            ownedCourses[courseHash].owner !=
+            0x0000000000000000000000000000000000000000;
     }
 
     function hasCourseOwnership(bytes32 courseHash)
