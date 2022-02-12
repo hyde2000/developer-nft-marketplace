@@ -28,6 +28,8 @@ export type UseNetworkColumns = {
 export type UseOwnedCoursesColumns = {
   data?: NormalizedOwnedCourseType[];
   isValidating: boolean;
+  hasInitialResponse: boolean;
+  lookup: any;
   mutate: KeyedMutator<NormalizedOwnedCourseType[]>;
   isEmpty: boolean;
 };

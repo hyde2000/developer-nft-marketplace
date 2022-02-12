@@ -13,6 +13,7 @@ const Button: FC<Props> = ({
   onClick,
   children,
   className = "text-white bg-indigo-600 hover:bg-indigo-700",
+  disabled,
   hoverable = true,
   variant = "purple",
 }) => {
@@ -29,6 +30,7 @@ const Button: FC<Props> = ({
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className={`disabled:opacity-50 disabled:cursor-not-allowed xs:px-8 xs:py-3 p-2 border rounded-md text-base font-medium ${className} ${variants[variant]}`}
     >
       {children}

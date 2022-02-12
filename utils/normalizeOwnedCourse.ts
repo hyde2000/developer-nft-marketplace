@@ -1,7 +1,6 @@
 import Web3 from "web3";
 
 import { OwnedCourseType } from "types/common";
-import { CourseType } from "types/content";
 
 export const COURSE_STATES: { [key: number]: string } = {
   0: "purchased",

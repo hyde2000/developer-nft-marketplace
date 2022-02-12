@@ -10,7 +10,7 @@ import { createCourseHash } from "@utils/createCourseHash";
 export const ownedCoursesHandler =
   (web3: Web3 | null, contract: any) =>
   (courses: CourseType[], account?: string) => {
-    const { data, isValidating, mutate } = useSWR(
+    const { data, isValidating, mutate, error } = useSWR(
       () =>
         web3 && contract && account ? `web3/ownedCourses/${account}` : null,
       async () => {
@@ -46,13 +46,20 @@ export const ownedCoursesHandler =
     );
 
     const empty = isEmpty(data);
+    const lookup =
+      data?.reduce((a, c) => {
+        a[c.id] = c;
+        return a;
+      }, {}) ?? {};
 
     return {
       ownedCourses: {
         data,
         mutate,
+        hasInitialResponse: data || error,
         isValidating,
         isEmpty: empty,
+        lookup: lookup,
       },
     };
   };
