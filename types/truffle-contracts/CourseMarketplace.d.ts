@@ -36,7 +36,43 @@ export interface CourseMarketplaceInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  repurchaseCourse: {
+    (courseHash: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      courseHash: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      courseHash: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      courseHash: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
   activateCourse: {
+    (courseHash: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      courseHash: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      courseHash: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      courseHash: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  deactivateCourse: {
     (courseHash: string, txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
     >;
@@ -110,7 +146,43 @@ export interface CourseMarketplaceInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    repurchaseCourse: {
+      (courseHash: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        courseHash: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        courseHash: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        courseHash: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
     activateCourse: {
+      (courseHash: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        courseHash: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        courseHash: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        courseHash: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    deactivateCourse: {
       (courseHash: string, txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
       >;
