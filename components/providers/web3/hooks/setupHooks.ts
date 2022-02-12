@@ -9,7 +9,7 @@ import { ownedCoursesHandler } from "./useOwnedCourses";
 export const setupHooks = (web3: Web3 | null, provider: any, contract: any) => {
   return {
     useAccount: accountHandler(web3, provider),
-    useNetwork: networkHandler(web3, provider),
+    useNetwork: networkHandler(web3),
     useOwnedCourses: ownedCoursesHandler(web3, contract),
     useOwnedCourse: ownedCourseHandler(web3, contract),
     useManagedCourses: managedCoursesHandler(web3, contract),

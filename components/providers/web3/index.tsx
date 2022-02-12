@@ -31,6 +31,10 @@ const Web3Context = createContext<Web3ContextType>({
   isLoading: true,
 });
 
+const setListeners = (provider: any) => {
+  provider.on("chainChanged", () => window.location.reload());
+};
+
 const Web3Provider = ({ children }: { children: ReactNode | ReactNode[] }) => {
   const [web3Api, setWeb3Api] = useState<Web3ContextType>({
     provider: Web3.givenProvider,
@@ -49,6 +53,7 @@ const Web3Provider = ({ children }: { children: ReactNode | ReactNode[] }) => {
         const web3 = new Web3(provider);
         const contract = await loadContract("CourseMarketplace", web3);
 
+        setListeners(provider);
         setWeb3Api({
           provider,
           web3,

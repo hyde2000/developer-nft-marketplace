@@ -22,7 +22,6 @@ export type UseNetworkColumns = {
   isSupported: boolean;
   error?: any;
   isValidating: boolean;
-  mutate: KeyedMutator<string>;
 };
 
 export type UseOwnedCoursesColumns = {

@@ -18,8 +18,8 @@ if (TARGET_CHAIN_ID) {
   targetNetwork = NETWORKS[TARGET_CHAIN_ID];
 }
 
-export const networkHandler = (web3: Web3 | null, provider: any) => () => {
-  const { data, error, mutate, ...rest } = useSWR(
+export const networkHandler = (web3: Web3 | null) => () => {
+  const { data, error, ...rest } = useSWR(
     () => (web3 ? "web3/network" : null),
     async () => {
       const chainID = await web3!.eth.getChainId();
@@ -31,21 +31,10 @@ export const networkHandler = (web3: Web3 | null, provider: any) => () => {
     }
   );
 
-  useEffect(() => {
-    const mutator = (chainID: string) =>
-      mutate(NETWORKS[parseInt(chainID, 16)]);
-    provider.on("chainChanged", mutator);
-
-    return () => {
-      provider.removeListener("chainChanged", mutator);
-    };
-  }, [provider]);
-
   return {
     network: {
       data,
       hasInitialResponse: data || error,
-      mutate,
       target: targetNetwork,
       isSupported: data === targetNetwork,
       ...rest,

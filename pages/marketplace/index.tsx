@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Loader } from "@components/ui/common";
+import { Button, Loader, Message } from "@components/ui/common";
 import { CourseCard, CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import OrderModal from "@components/ui/order/modal";
@@ -94,9 +94,37 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
               const owned = ownedCourses.lookup[course.id];
               if (owned) {
                 return (
-                  <Button disabled={true} variant="green">
-                    Owned
-                  </Button>
+                  <>
+                    <div>
+                      <Button disabled={true} variant="green">
+                        Owned
+                      </Button>
+                      {owned.state === "deactivated" && (
+                        <Button
+                          disabled={false}
+                          onClick={() => alert("Re-activating")}
+                          variant="purple"
+                        >
+                          Fund to Activate
+                        </Button>
+                      )}
+                    </div>
+                    <div className="mt-1">
+                      {owned.state === "activated" && (
+                        <Message size="sm">Activated</Message>
+                      )}
+                      {owned.state === "deactivated" && (
+                        <Message type="danger" size="sm">
+                          Deactivated
+                        </Message>
+                      )}
+                      {owned.state === "purchased" && (
+                        <Message type="warning" size="sm">
+                          Waiting for Activation
+                        </Message>
+                      )}
+                    </div>
+                  </>
                 );
               }
 
