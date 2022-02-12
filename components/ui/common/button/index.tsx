@@ -1,5 +1,11 @@
 import { FC, ReactNode } from "react";
 
+const SIZE = {
+  sm: "p-2 text-base xs:px-4",
+  md: "p-3 text-base xs:px-8",
+  lg: "p-3 text-lg xs:px-8",
+};
+
 type Props = {
   children: ReactNode;
   onClick?: () => void;
@@ -7,6 +13,7 @@ type Props = {
   disabled?: boolean;
   hoverable?: boolean;
   variant?: "purple" | "green" | "red" | "lightPurple" | "white";
+  sizeClass: "sm" | "md" | "lg";
 };
 
 const Button: FC<Props> = ({
@@ -16,6 +23,7 @@ const Button: FC<Props> = ({
   disabled,
   hoverable = true,
   variant = "purple",
+  sizeClass = "md",
 }) => {
   const variants = {
     purple: `text-white bg-indigo-600 ${hoverable && "hover:bg-indigo-700"}`,
@@ -27,11 +35,13 @@ const Button: FC<Props> = ({
     white: "text-black bg-white",
   };
 
+  const size = SIZE[sizeClass];
+
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`disabled:opacity-50 disabled:cursor-not-allowed xs:px-8 xs:py-3 p-2 border rounded-md text-base font-medium ${className} ${variants[variant]}`}
+      className={`${size} disabled:opacity-50 disabled:cursor-not-allowed border rounded-md font-medium ${className} ${variants[variant]}`}
     >
       {children}
     </button>
