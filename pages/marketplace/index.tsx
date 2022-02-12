@@ -14,6 +14,7 @@ import { useOwnedCourses } from "@components/hooks/useOwnedCourses";
 
 const Marketplace = ({ courses }: { courses: CourseType[] }) => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
+  const [isNewPurchase, setIsNewPurchase] = useState(true);
 
   const { web3, contract, requireInstall } = useWeb3();
   const { hasConnectedWallet, isConnecting, account } = useWalletInfo();
@@ -25,7 +26,32 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
     const emailHash = web3?.utils.sha3(order.email);
     let proof;
 
+    const _purchaseCourse = async (
+      hexCourseID: string,
+      proof: string,
+      value: string
+    ) => {
+      try {
+        await contract.methods
+          .purchaseCourse(hexCourseID, proof)
+          .send({ from: account.data, value });
+      } catch {
+        console.error("Purchase course: Operation has failed.");
+      }
+    };
+
+    const _repurchaseCourse = async (courseHash: string, value: string) => {
+      try {
+        await contract.methods
+          .repurchaseCourse(courseHash)
+          .send({ from: account.data, value });
+      } catch {
+        console.error("Purchase course: Operation has failed.");
+      }
+    };
+
     if (hexCourseID && address && emailHash) {
+      const value = web3?.utils.toWei(order.price);
       const orderHash = web3?.utils.soliditySha3(
         {
           type: "bytes32",
@@ -37,9 +63,8 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
         }
       );
 
-      proof =
-        orderHash &&
-        web3?.utils.soliditySha3(
+      if (orderHash && isNewPurchase) {
+        proof = web3?.utils.soliditySha3(
           {
             type: "bytes32",
             value: emailHash,
@@ -49,15 +74,10 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
             value: orderHash,
           }
         );
-    }
-
-    const value = web3?.utils.toWei(order.price);
-    try {
-      await contract.methods
-        .purchaseCourse(hexCourseID, proof)
-        .send({ from: account.data, value });
-    } catch {
-      console.error("Purchase error: Operation has failed.");
+        proof && value && _purchaseCourse(hexCourseID, proof, value);
+      } else {
+        orderHash && value && _repurchaseCourse(orderHash, value);
+      }
     }
   };
 
@@ -120,7 +140,10 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                           <div className="ml-1">
                             <Button
                               disabled={false}
-                              onClick={() => alert("Re-activating")}
+                              onClick={() => {
+                                setIsNewPurchase(false);
+                                setSelectedCourse(course);
+                              }}
                               variant="purple"
                               sizeClass="sm"
                             >
@@ -150,8 +173,12 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
       </CourseList>
       <OrderModal
         course={selectedCourse}
+        isNewPurchase={isNewPurchase}
         onSubmit={purchaseCourse}
-        onClose={() => setSelectedCourse(null)}
+        onClose={() => {
+          setSelectedCourse(null);
+          setIsNewPurchase(true);
+        }}
       />
     </>
   );

@@ -13,7 +13,7 @@ type Props = {
   disabled?: boolean;
   hoverable?: boolean;
   variant?: "purple" | "green" | "red" | "lightPurple" | "white";
-  sizeClass: "sm" | "md" | "lg";
+  sizeClass?: "sm" | "md" | "lg";
 };
 
 const Button: FC<Props> = ({
