@@ -13,6 +13,7 @@ contract("CourseMarketplace", (accounts) => {
   let index = 0;
   let index2 = 1;
 
+  // purchaseCourse
   describe("Purchase the new course", () => {
     it("Success: can get the purchased course hash by index", async () => {
       const _contract = await CourseMarketplace.deployed();
@@ -71,6 +72,7 @@ contract("CourseMarketplace", (accounts) => {
     });
   });
 
+  // activateCourse
   describe("Activate the purchased course", () => {
     it("Success: should have 'actived' state", async () => {
       const _contract = await CourseMarketplace.deployed();
@@ -99,6 +101,7 @@ contract("CourseMarketplace", (accounts) => {
     });
   });
 
+  // transferOwnership
   describe("Transfer ownership", () => {
     it("Success: should return deployer address", async () => {
       const _contract = await CourseMarketplace.deployed();
@@ -141,6 +144,7 @@ contract("CourseMarketplace", (accounts) => {
     });
   });
 
+  // deactivateCourse
   describe("Deactivate course", () => {
     it("Success: deactivate course and set price = 0", async () => {
       const _contract = await CourseMarketplace.deployed();
@@ -186,12 +190,16 @@ contract("CourseMarketplace", (accounts) => {
     });
   });
 
+  // repurchaseCourse
   describe("Repurchase course", () => {
     it("Success: should be able to repurchase with the original buyer", async () => {
       const _contract = await CourseMarketplace.deployed();
       const courseHash2 = await _contract.getCourseHashAtIndex(index2);
 
-      await _contract.repurchaseCourse(courseHash2, { from: buyer, value });
+      await _contract.repurchaseCourse(courseHash2, {
+        from: buyer,
+        value,
+      });
       const course = await _contract.getCourseByHash(courseHash2);
 
       const exptectedState = 0;

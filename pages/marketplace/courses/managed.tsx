@@ -41,14 +41,22 @@ const ManageCourses = () => {
     }
   };
 
-  const activateCourse = async (courseHash: string) => {
+  const changeCourseState = async (courseHash: string, method: string) => {
     try {
-      await contract.methods
-        .activateCourse(courseHash)
-        .send({ from: account.data });
+      await contract.methods[method](courseHash).send({
+        from: account.data,
+      });
     } catch (err: any) {
       console.error(err.message);
     }
+  };
+
+  const activateCourse = async (courseHash: string) => {
+    changeCourseState(courseHash, "activateCourse");
+  };
+
+  const deactivateCourse = async (courseHash: string) => {
+    changeCourseState(courseHash, "deactivateCourse");
   };
 
   if (!account.isAdmin) {
@@ -101,7 +109,12 @@ const ManageCourses = () => {
                 >
                   Activate
                 </Button>
-                <Button variant="red">Deactivate</Button>
+                <Button
+                  variant="red"
+                  onClick={() => deactivateCourse(course.hash)}
+                >
+                  Deactivate
+                </Button>
               </div>
             )}
           </ManagedCourseCard>
