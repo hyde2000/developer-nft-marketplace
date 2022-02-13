@@ -21,22 +21,29 @@ const Item: FC<ItemProps> = ({ title, value, className }) => {
 type Props = {
   children: ReactNode;
   course: NormalizedManagedCourseType;
+  isSearched: boolean;
 };
 
-export const ManagedCourseCard: FC<Props> = ({ children, course }) => {
+export const ManagedCourseCard: FC<Props> = ({
+  children,
+  course,
+  isSearched = false,
+}) => {
   return (
-    <div className="bg-white border shadow overflow-hidden sm:rounded-lg mb-3">
-      <div className="border-t border-gray-200">
-        {Object.keys(course).map((key, i) => (
-          <Item
-            key={key}
-            className={`${i % 2 ? "bg-gray-50" : "bg-white"}`}
-            title={key[0].toUpperCase() + key.slice(1)}
-            value={course[key as keyof NormalizedManagedCourseType]}
-          />
-        ))}
-        <div className="bg-white px-4 py-2 sm:px-6">{children}</div>
-      </div>
+    <div
+      className={`${
+        isSearched ? "border-indigo-600" : "bg-gray-200"
+      }bg-white border shadow overflow-hidden sm:rounded-lg mb-3`}
+    >
+      {Object.keys(course).map((key, i) => (
+        <Item
+          key={key}
+          className={`${i % 2 ? "bg-gray-50" : "bg-white"}`}
+          title={key[0].toUpperCase() + key.slice(1)}
+          value={course[key as keyof NormalizedManagedCourseType]}
+        />
+      ))}
+      <div className="bg-white px-4 py-2 sm:px-6">{children}</div>
     </div>
   );
 };
