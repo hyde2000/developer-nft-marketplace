@@ -44,6 +44,7 @@ const ManageCourses = () => {
     [hash: string]: boolean;
   }>({ hash: false });
   const [searchedCourse, setSearchedCourse] = useState(null);
+  const [filters, setFilters] = useState<{ state: string }>({ state: "all" });
 
   console.log(proofedOwnership);
 
@@ -152,6 +153,16 @@ const ManageCourses = () => {
     );
   };
 
+  const filteredCourses = managedCourses.data
+    ?.filter((course) => {
+      if (filters.state === "all") {
+        return true;
+      }
+
+      return course.state === filters.state;
+    })
+    .map((course) => renderCard(course));
+
   if (!account.isAdmin) {
     return null;
   }
@@ -159,7 +170,10 @@ const ManageCourses = () => {
   return (
     <>
       <MarketHeader />
-      <CourseFilter onSearchSubmit={searchCourse} />
+      <CourseFilter
+        onSearchSubmit={searchCourse}
+        onFilterSelect={(value: string) => setFilters({ state: value })}
+      />
       <section className="grid grid-cols-1">
         {searchedCourse && (
           <div>
@@ -168,7 +182,11 @@ const ManageCourses = () => {
           </div>
         )}
         <h1 className="text-2xl font-bold p-5">All Courses</h1>
-        {managedCourses.data?.map((course) => renderCard(course))}
+        {filteredCourses}
+
+        {filteredCourses?.length === 0 && (
+          <Message type="warning">No courses to display</Message>
+        )}
       </section>
     </>
   );
