@@ -238,4 +238,27 @@ contract("CourseMarketplace", (accounts) => {
       } catch (err) {}
     });
   });
+
+  describe("Receive funds", () => {
+    it("should have transacted funds", async () => {
+      const _contract = await CourseMarketplace.deployed();
+
+      const value = "100000000000000000";
+      const contractBeforeTx = await web3.eth.getBalance(_contract.address);
+
+      await web3.eth.sendTransaction({
+        from: buyer,
+        to: _contract.address,
+        value: value,
+      });
+
+      const contractAfterTx = await web3.eth.getBalance(_contract.address);
+
+      assert.equal(
+        Number(contractBeforeTx) + Number(value),
+        Number(contractAfterTx),
+        "Value after transaction is wrong"
+      );
+    });
+  });
 });

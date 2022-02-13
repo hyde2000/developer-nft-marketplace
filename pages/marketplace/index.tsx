@@ -134,7 +134,7 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                           variant="white"
                           sizeClass="sm"
                         >
-                          You Owned
+                          You Own
                         </Button>
                         {owned.state === "deactivated" && (
                           <div className="ml-1">
