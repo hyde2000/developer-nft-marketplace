@@ -46,8 +46,6 @@ const ManageCourses = () => {
   const [searchedCourse, setSearchedCourse] = useState(null);
   const [filters, setFilters] = useState<{ state: string }>({ state: "all" });
 
-  console.log(proofedOwnership);
-
   const { web3, contract } = useWeb3();
   const { account } = useAdmin("/marketplace");
   const { managedCourses } = useManagedCourses(account);
@@ -56,6 +54,10 @@ const ManageCourses = () => {
     email: string,
     { hash, proof }: { hash: string; proof: string }
   ) => {
+    if (!email) {
+      return;
+    }
+
     const emailHash = web3?.utils.sha3(email);
     if (emailHash) {
       const proofToCheck = web3?.utils.soliditySha3(
