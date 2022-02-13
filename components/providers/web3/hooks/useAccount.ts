@@ -4,7 +4,7 @@ import Web3 from "web3";
 
 import { isEmpty } from "@components/hooks/isEmpty";
 
-const adminAddress = process.env.ADMIN_HASHED_ADDRESS;
+const adminAddress = `${process.env.NEXT_PUBLIC_ADMIN_HASHED_ADDRESS}`;
 
 export const accountHandler = (web3: Web3 | null, provider: any) => () => {
   const { data, mutate, error, ...rest } = useSWR(
