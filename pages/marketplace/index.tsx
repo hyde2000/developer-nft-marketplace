@@ -15,48 +15,23 @@ import { withToast } from "@utils/toast";
 
 const Marketplace = ({ courses }: { courses: CourseType[] }) => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
+  const [busyCourseID, setBusyCourseID] = useState("");
   const [isNewPurchase, setIsNewPurchase] = useState(true);
 
   const { web3, contract, requireInstall } = useWeb3();
   const { hasConnectedWallet, isConnecting, account } = useWalletInfo();
   const { ownedCourses } = useOwnedCourses(courses, account.data);
 
-  const purchaseCourse = async (order: OrderType) => {
-    const hexCourseID = web3?.utils.utf8ToHex(selectedCourse!.id);
+  const purchaseCourse = async (order: OrderType, course: CourseType) => {
+    const hexCourseID = web3?.utils.utf8ToHex(course.id);
     const address = account.data;
     const emailHash = web3?.utils.sha3(order.email);
     let proof;
 
-    const _purchaseCourse = async (
-      hexCourseID: string,
-      proof: string,
-      value: string
-    ) => {
-      try {
-        const result = await contract.methods
-          .purchaseCourse(hexCourseID, proof)
-          .send({ from: account.data, value });
-
-        return result;
-      } catch (error: any) {
-        throw new Error(error.message);
-      }
-    };
-
-    const _repurchaseCourse = async (courseHash: string, value: string) => {
-      try {
-        const result = await contract.methods
-          .repurchaseCourse(courseHash)
-          .send({ from: account.data, value });
-
-        return result;
-      } catch (error: any) {
-        throw new Error(error.message);
-      }
-    };
-
     if (hexCourseID && address && emailHash) {
       const value = web3?.utils.toWei(order.price);
+      setBusyCourseID(course.id);
+
       const orderHash = web3?.utils.soliditySha3(
         {
           type: "bytes32",
@@ -67,7 +42,6 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
           value: address,
         }
       );
-
       if (orderHash && isNewPurchase) {
         proof = web3?.utils.soliditySha3(
           {
@@ -84,6 +58,43 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
         orderHash && value && withToast(_repurchaseCourse(orderHash, value));
       }
     }
+  };
+
+  const _purchaseCourse = async (
+    hexCourseID: string,
+    proof: string,
+    value: string
+  ) => {
+    try {
+      const result = await contract.methods
+        .purchaseCourse(hexCourseID, proof)
+        .send({ from: account.data, value });
+
+      return result;
+    } catch (error: any) {
+      throw new Error(error.message);
+    } finally {
+      setBusyCourseID("");
+    }
+  };
+
+  const _repurchaseCourse = async (courseHash: string, value: string) => {
+    try {
+      const result = await contract.methods
+        .repurchaseCourse(courseHash)
+        .send({ from: account.data, value });
+
+      return result;
+    } catch (error: any) {
+      throw new Error(error.message);
+    } finally {
+      setBusyCourseID("");
+    }
+  };
+
+  const cleanupModal = () => {
+    setSelectedCourse(null);
+    setIsNewPurchase(true);
   };
 
   return (
@@ -124,8 +135,14 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                 }
 
                 if (!ownedCourses.hasInitialResponse) {
-                  return <div style={{ height: "42px" }}></div>;
+                  return (
+                    <Button variant="white" disabled={true} sizeClass="sm">
+                      Loading State...
+                    </Button>
+                  );
                 }
+
+                const isBusy = busyCourseID === course.id;
 
                 if (owned) {
                   return (
@@ -164,10 +181,18 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                 return (
                   <Button
                     onClick={() => setSelectedCourse(course)}
-                    disabled={!hasConnectedWallet}
+                    disabled={!hasConnectedWallet || isBusy}
                     variant="lightPurple"
                     sizeClass="sm"
                   >
+                    {isBusy ? (
+                      <div className="flex">
+                        <Loader size="sm" />
+                        <div className="ml-2">In Progress</div>
+                      </div>
+                    ) : (
+                      <div>Purchase</div>
+                    )}
                     Purchase
                   </Button>
                 );
@@ -179,11 +204,11 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
       <OrderModal
         course={selectedCourse}
         isNewPurchase={isNewPurchase}
-        onSubmit={purchaseCourse}
-        onClose={() => {
-          setSelectedCourse(null);
-          setIsNewPurchase(true);
+        onSubmit={(formData, course) => {
+          purchaseCourse(formData, course);
+          cleanupModal();
         }}
+        onClose={cleanupModal}
       />
     </>
   );

@@ -41,7 +41,7 @@ const createFormState = (
 type Props = {
   course: CourseType | null;
   onClose: () => void;
-  onSubmit: (order: OrderType) => void;
+  onSubmit: (order: OrderType, course: CourseType) => void;
   isNewPurchase: boolean;
 };
 
@@ -223,7 +223,7 @@ const OrderModal: FC<Props> = ({
           <Button
             disabled={formState.isDisabled}
             onClick={() => {
-              onSubmit(order);
+              course && onSubmit(order, course);
             }}
           >
             Submit
