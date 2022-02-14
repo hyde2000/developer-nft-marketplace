@@ -9,6 +9,7 @@ import { useWeb3 } from "@components/providers";
 import { useAdmin } from "@components/hooks/useAdmin";
 import { normalizeOwnedCourse } from "@utils/normalizeOwnedCourse";
 import { NormalizedManagedCourseType } from "types/common";
+import { withToast } from "@utils/toast";
 
 type Props = {
   onVerify: (email: string) => void;
@@ -79,20 +80,22 @@ const ManageCourses = () => {
 
   const changeCourseState = async (courseHash: string, method: string) => {
     try {
-      await contract.methods[method](courseHash).send({
+      const result = await contract.methods[method](courseHash).send({
         from: account.data,
       });
+
+      return result;
     } catch (err: any) {
-      console.error(err.message);
+      throw new Error(err.message);
     }
   };
 
   const activateCourse = async (courseHash: string) => {
-    changeCourseState(courseHash, "activateCourse");
+    withToast(changeCourseState(courseHash, "activateCourse"));
   };
 
   const deactivateCourse = async (courseHash: string) => {
-    changeCourseState(courseHash, "deactivateCourse");
+    withToast(changeCourseState(courseHash, "deactivateCourse"));
   };
 
   const searchCourse = async (courseHash: string) => {

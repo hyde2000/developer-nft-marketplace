@@ -13,6 +13,9 @@ import { useWeb3 } from "@components/providers";
 import { useOwnedCourses } from "@components/hooks/useOwnedCourses";
 import { withToast } from "@utils/toast";
 
+type PurchaseProps = { hexCourseID: string; proof: string; value: string };
+type RepurchaseProps = { courseHash: string; value: string };
+
 const Marketplace = ({ courses }: { courses: CourseType[] }) => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
   const [busyCourseID, setBusyCourseID] = useState("");
@@ -53,22 +56,39 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
             value: orderHash,
           }
         );
-        proof && value && withToast(_purchaseCourse(hexCourseID, proof, value));
+        proof &&
+          value &&
+          withToast(_purchaseCourse({ hexCourseID, proof, value }, course));
       } else {
-        orderHash && value && withToast(_repurchaseCourse(orderHash, value));
+        orderHash &&
+          value &&
+          withToast(
+            _repurchaseCourse({ courseHash: orderHash, value }, course)
+          );
       }
     }
   };
 
   const _purchaseCourse = async (
-    hexCourseID: string,
-    proof: string,
-    value: string
+    { hexCourseID, proof, value }: PurchaseProps,
+    course: CourseType
   ) => {
     try {
       const result = await contract.methods
         .purchaseCourse(hexCourseID, proof)
         .send({ from: account.data, value });
+
+      ownedCourses.data &&
+        ownedCourses.mutate([
+          ...ownedCourses.data,
+          {
+            ...course,
+            proof,
+            state: "purchased",
+            owner: account.data,
+            price: value,
+          },
+        ]);
 
       return result;
     } catch (error: any) {
@@ -78,11 +98,22 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
     }
   };
 
-  const _repurchaseCourse = async (courseHash: string, value: string) => {
+  const _repurchaseCourse = async (
+    { courseHash, value }: RepurchaseProps,
+    course: CourseType
+  ) => {
     try {
       const result = await contract.methods
         .repurchaseCourse(courseHash)
         .send({ from: account.data, value });
+
+      const index = ownedCourses.data?.findIndex((c) => c.id == course.id);
+      if (index && ownedCourses.data && index >= 0) {
+        ownedCourses.data[index].state = "purchased";
+        ownedCourses.mutate(ownedCourses.data);
+      } else {
+        ownedCourses.mutate();
+      }
 
       return result;
     } catch (error: any) {
@@ -161,7 +192,7 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                         {owned.state === "deactivated" && (
                           <div className="ml-1">
                             <Button
-                              disabled={false}
+                              disabled={isBusy}
                               onClick={() => {
                                 setIsNewPurchase(false);
                                 setSelectedCourse(course);
@@ -169,7 +200,14 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                               variant="purple"
                               sizeClass="sm"
                             >
-                              Fund to Activate
+                              {isBusy ? (
+                                <div className="flex">
+                                  <Loader size="sm" />
+                                  <div className="ml-2">In Progress</div>
+                                </div>
+                              ) : (
+                                <div>Fund to Activate</div>
+                              )}
                             </Button>
                           </div>
                         )}

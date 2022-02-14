@@ -25,11 +25,11 @@ export type UseNetworkColumns = {
 };
 
 export type UseOwnedCoursesColumns = {
-  data?: NormalizedOwnedCourseType[];
+  data?: any[];
   isValidating: boolean;
   hasInitialResponse: boolean;
   lookup: any;
-  mutate: KeyedMutator<NormalizedOwnedCourseType[]>;
+  mutate: KeyedMutator<any[]>;
   isEmpty: boolean;
 };
 
