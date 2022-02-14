@@ -11,6 +11,7 @@ import { MarketHeader } from "@components/ui/marketplace";
 import { OrderType } from "types/common";
 import { useWeb3 } from "@components/providers";
 import { useOwnedCourses } from "@components/hooks/useOwnedCourses";
+import { withToast } from "@utils/toast";
 
 const Marketplace = ({ courses }: { courses: CourseType[] }) => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
@@ -32,21 +33,25 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
       value: string
     ) => {
       try {
-        await contract.methods
+        const result = await contract.methods
           .purchaseCourse(hexCourseID, proof)
           .send({ from: account.data, value });
-      } catch {
-        console.error("Purchase course: Operation has failed.");
+
+        return result;
+      } catch (error: any) {
+        throw new Error(error.message);
       }
     };
 
     const _repurchaseCourse = async (courseHash: string, value: string) => {
       try {
-        await contract.methods
+        const result = await contract.methods
           .repurchaseCourse(courseHash)
           .send({ from: account.data, value });
-      } catch {
-        console.error("Purchase course: Operation has failed.");
+
+        return result;
+      } catch (error: any) {
+        throw new Error(error.message);
       }
     };
 
@@ -74,9 +79,9 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
             value: orderHash,
           }
         );
-        proof && value && _purchaseCourse(hexCourseID, proof, value);
+        proof && value && withToast(_purchaseCourse(hexCourseID, proof, value));
       } else {
-        orderHash && value && _repurchaseCourse(orderHash, value);
+        orderHash && value && withToast(_repurchaseCourse(orderHash, value));
       }
     }
   };

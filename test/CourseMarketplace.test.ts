@@ -262,3 +262,5 @@ contract("CourseMarketplace", (accounts) => {
     });
   });
 });
+
+export {};

@@ -1,5 +1,7 @@
 import type { AppProps } from "next/app";
-import { FC, Props } from "react";
+import { FC } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "@styles/globals.css";
 
@@ -12,6 +14,7 @@ function MyApp({
   const Layout = Component.Layout ?? Noop;
   return (
     <Layout>
+      <ToastContainer />
       <Component {...pageProps} />
     </Layout>
   );
