@@ -17,6 +17,7 @@ const EthRates: FC = () => {
           {eth.data ? (
             <>
               <Image
+                alt="eth"
                 layout="fixed"
                 height="35"
                 width="35"
@@ -38,6 +39,7 @@ const EthRates: FC = () => {
             <>
               <span className="text-xl font-bold">{eth.pricePerItem}</span>
               <Image
+                alt="eth-price"
                 layout="fixed"
                 height="35"
                 width="35"

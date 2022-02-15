@@ -22,6 +22,7 @@ const OwnedCourseCard: FC<Props> = ({ children, ownedCourse }) => {
         <div className="flex-1">
           <div className="h-72 sm:h-full next-image-wrapper">
             <Image
+              alt={ownedCourse.title}
               className="object-cover"
               src={ownedCourse.coverImage}
               width="45"

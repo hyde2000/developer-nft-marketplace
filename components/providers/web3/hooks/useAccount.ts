@@ -28,7 +28,7 @@ export const accountHandler = (web3: Web3 | null, provider: any) => () => {
     return () => {
       provider.removeListener("accountsChanged", mutator);
     };
-  }, [provider]);
+  }, [mutate]);
 
   const empty = isEmpty(data);
 

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useAccount } from "@components/hooks/useAccount";
 import { useWeb3 } from "..";
 
-export const adminHandler = (redirectTo: string) => {
+export const useAdminHandler = (redirectTo: string) => {
   const { account } = useAccount();
   const { requireInstall } = useWeb3();
 
@@ -18,7 +18,7 @@ export const adminHandler = (redirectTo: string) => {
     ) {
       router.push(redirectTo);
     }
-  }, [account]);
+  }, [account, redirectTo, requireInstall, router]);
 
   return { account };
 };

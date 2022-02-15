@@ -73,7 +73,7 @@ const OrderModal: FC<Props> = ({
         confirmEmail: "",
       });
     }
-  }, [course]);
+  }, [course, eth]);
 
   const formState = createFormState(order, hasAgreedTOS, isNewPurchase);
 

@@ -168,7 +168,7 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                 if (!ownedCourses.hasInitialResponse) {
                   return (
                     <Button variant="white" disabled={true} sizeClass="sm">
-                      Loading State...
+                      {hasConnectedWallet ? "Loading State..." : "Connect"}
                     </Button>
                   );
                 }

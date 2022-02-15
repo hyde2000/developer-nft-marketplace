@@ -1,4 +1,5 @@
 import { KeyedMutator } from "swr";
+
 import {
   NormalizedManagedCourseType,
   NormalizedOwnedCourseType,

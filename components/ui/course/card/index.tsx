@@ -9,7 +9,7 @@ type Props = {
   course: CourseType;
   disabled?: boolean;
   Footer?: FC;
-  state: "purchased" | "activated" | "deactivated";
+  state?: "purchased" | "activated" | "deactivated";
 };
 
 const Card: FC<Props> = ({ course, disabled, Footer, state }) => {
