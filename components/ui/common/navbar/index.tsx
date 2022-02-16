@@ -25,18 +25,8 @@ const NavBar: FC = () => {
                 className="font-medium mr-8 text-gray-500 hover:text-gray-900"
                 value="Marketplace"
               />
-              <ActiveLink
-                href="/blog"
-                className="font-medium mr-8 text-gray-500 hover:text-gray-900"
-                value="Blog"
-              />
             </div>
             <div className="text-center">
-              <ActiveLink
-                href="/wishlist"
-                className="font-medium sm:mr-8 mr-1 text-gray-500 hover:text-gray-900"
-                value="Wishlist"
-              />
               {isLoading ? (
                 <Button
                   disabled={true}
