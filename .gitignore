@@ -33,7 +33,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# contract JSON data
-public/contracts
-
 keys.json
