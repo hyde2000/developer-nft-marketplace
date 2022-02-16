@@ -231,7 +231,6 @@ const Marketplace = ({ courses }: { courses: CourseType[] }) => {
                     ) : (
                       <div>Purchase</div>
                     )}
-                    Purchase
                   </Button>
                 );
               }}

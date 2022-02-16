@@ -23,10 +23,10 @@ export const accountHandler = (web3: Web3 | null, provider: any) => () => {
 
   useEffect(() => {
     const mutator = (accounts: string[]) => mutate(accounts[0]);
-    provider.on("accountsChanged", mutator);
+    provider?.on("accountsChanged", mutator);
 
     return () => {
-      provider.removeListener("accountsChanged", mutator);
+      provider?.removeListener("accountsChanged", mutator);
     };
   }, [mutate]);
 
